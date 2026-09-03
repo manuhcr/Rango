@@ -7,7 +7,6 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -16,7 +15,7 @@
             android:id="@+id/toolbar"
             style="@style/ToolbarVerde"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="?attr/actionBarSize"
             app:title="@string/app_name" />
 
         <TextView
@@ -24,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/verde_escuro"
-            android:padding="16dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingBottom="12dp"
@@ -35,26 +33,47 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#FFFFFF">
+            android:layout_weight="1">
 
             <!--
                 A RecyclerView em si é só isto. Altura match_parent aqui é
                 correto: quem não pode ser match_parent é a raiz do LAYOUT DO
                 ITEM, que é outro arquivo.
             -->
-
-            <!-- Estado vazio: faz parte da interface, não é acidente. -->
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvLugares"
                 android:layout_width="match_parent"
-                android:layout_height="691dp"
-                android:layout_marginTop="40dp"
-                android:background="#FFFFFF"
+                android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingBottom="0dp"
-                tools:listitem="@layout/item_lugar" />
+                android:paddingBottom="88dp" />
+
+            <!-- Estado vazio: faz parte da interface, não é acidente. -->
+            <LinearLayout
+                android:id="@+id/grupoVazio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vazio_titulo"
+                    android:textColor="@color/texto"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/vazio_texto"
+                    android:textColor="@color/texto_suave"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 

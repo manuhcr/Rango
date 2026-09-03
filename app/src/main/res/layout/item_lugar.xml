@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    LAYOUT DE UM ITEM. Descreve UMA linha da lista, nunca a lista inteira.
 
-    ARMADILHA CLÁSSICA: se layout_height virar match_parent, cada item passa a
-    ocupar a tela toda e você vê um item só, achando que a lista quebrou.
-    Altura de item é sempre wrap_content ou um valor fixo em dp.
--->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
