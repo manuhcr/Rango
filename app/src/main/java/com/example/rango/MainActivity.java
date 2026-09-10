@@ -3,8 +3,10 @@ package com.example.rango;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ParcelUuid;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -21,6 +23,8 @@ import com.example.rango.data.Catalogo;
 import com.example.rango.model.Lugar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.example.rango.data.LugarRepository;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
 
     static List<Lugar> listaLugares = new ArrayList<>();
     private LugarAdapter adapter;
+
+    private LugarRepository repository;
+    private ListenerRegistration registro;
+
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
+            repository = new LugarRepository();
 
             FloatingActionButton btNovo = findViewById(R.id.fabNovo);
             btNovo.setOnClickListener(v -> {
@@ -75,25 +84,31 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                     int posicao = viewHolder.getAdapterPosition();
                     Lugar item = listaLugares.get(posicao);
-                    listaLugares.remove(posicao);
-                    adapter.notifyItemRemoved(posicao);
+                    //listaLugares.remove(posicao);
+                    //adapter.notifyItemRemoved(posicao);
+
+                    //Excluir do banco de dados
+                    repository.excluir(item)
+                            .addOnFailureListener(e -> {
+                                Log.e("ERRO", "Erro ao excluir", e);
+                            });
 
                     //Avisar
 
                     Snackbar.make(findViewById(R.id.rvLugares), "Lugar removido", Snackbar.LENGTH_LONG).
-                            setAction("Desfazer", v -> {
-                                listaLugares.add(item);
-                                adapter.notifyDataSetChanged();
-                            }).show();
+                            setAction("Desfazer", v ->
+                                    repository.restaurar(item)).show();
                 }
             };
             new ItemTouchHelper(deslizar).attachToRecyclerView(findViewById(R.id.rvLugares));
         }
         @Override
         public void votar(Lugar lugar) {
-            lugar.setVotos(lugar.getVotos() + 1);
-            Catalogo.ordenarPorVotos(listaLugares);
-            adapter.notifyDataSetChanged();
+            //Alterar o banco de dados (votar)
+            repository.votar(lugar)
+                    .addOnFailureListener(e -> {
+                        Log.e("ERRO", "Erro ao votar", e);
+                    });
         }
 
         @Override
@@ -106,6 +121,18 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
         @Override
         protected void onResume(){
             super.onResume();
-            adapter.notifyDataSetChanged();
+
+            //Ativar o realtime do banco de dados
+
+            registro = repository.lerTempoReal((value, error) -> {
+                if (error != null) {
+                    Toast.makeText(this, "Erro ao ler " , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                listaLugares.clear();
+                listaLugares.addAll(value.toObjects(Lugar.class));
+                adapter.notifyDataSetChanged();
+            });
+
         }
 }

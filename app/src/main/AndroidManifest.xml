@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RangoNaRegua">
         <activity
+            android:name=".Autenticacao"
+            android:exported="false" />
+        <activity
             android:name=".DetalheActivity"
             android:exported="false" />
         <activity

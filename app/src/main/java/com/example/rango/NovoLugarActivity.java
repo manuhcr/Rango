@@ -5,6 +5,7 @@ import static com.example.rango.MainActivity.listaLugares;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.rango.data.LugarRepository;
 import com.example.rango.model.Lugar;
 
 public class NovoLugarActivity extends AppCompatActivity {
@@ -59,8 +61,18 @@ public class NovoLugarActivity extends AppCompatActivity {
                         Double.parseDouble(editarPreco.getText().toString()),
                         editarObservacao.getText().toString()
                 );
-                listaLugares.add(novo);
-                // Lógica para salvar 'novo' no BD
+                //listaLugares.add(novo);
+                LugarRepository repository = new LugarRepository();
+                repository.inserir(novo)
+                                .addOnSuccessListener(documentReference -> {
+                                    Toast.makeText(this, "Lugar salvo com sucesso",
+                                            Toast.LENGTH_SHORT).show();
+
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Erro ao salvar: " ,
+                                            Toast.LENGTH_SHORT).show();
+                                });
                 finish();
             }
         });

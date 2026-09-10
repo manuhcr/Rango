@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "261235573832",
+    "project_id": "rangoapptb-793d0",
+    "storage_bucket": "rangoapptb-793d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261235573832:android:e225d0c044d3c8bb5a447d",
+        "android_client_info": {
+          "package_name": "com.example.rango"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGDg9E5hV2yYeq43iN7kyA95MomiYaJKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
