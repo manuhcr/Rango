@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RangoNaRegua">
         <activity
-            android:name=".Autenticacao"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".DetalheActivity"
@@ -19,7 +19,7 @@
             android:name=".NovoLugarActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActitivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

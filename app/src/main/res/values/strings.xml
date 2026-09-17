@@ -2,6 +2,9 @@
 <resources>
     <string name="app_name">Rango</string>
 
+    <!-- Google Sign-In Web Client ID placeholder to resolve compilation error -->
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID</string>
+
     <string name="menu_ver_grade">Ver em grade</string>
     <string name="menu_ver_lista">Ver em lista</string>
     <string name="menu_filtrar">Filtrar categoria</string>

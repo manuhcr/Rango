@@ -2,15 +2,15 @@ package com.example.rango;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.ParcelUuid;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,6 +24,7 @@ import com.example.rango.model.Lugar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.example.rango.data.LugarRepository;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
@@ -50,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
                 return insets;
             });
             repository = new LugarRepository();
+
+            //Ligar a toolbar
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
             FloatingActionButton btNovo = findViewById(R.id.fabNovo);
             btNovo.setOnClickListener(v -> {
@@ -119,11 +124,29 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
         }
 
         @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_principal, menu);
+            return true;
+
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            if (item.getItemId() == R.id.acaoConta) {
+                FirebaseAuth autenticar = FirebaseAuth.getInstance();
+                autenticar.signOut();
+                Intent rota = new Intent(this, LoginActitivity.class);
+                startActivity(rota);
+                finish();
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
+        @Override
         protected void onResume(){
             super.onResume();
 
             //Ativar o realtime do banco de dados
-
             registro = repository.lerTempoReal((value, error) -> {
                 if (error != null) {
                     Toast.makeText(this, "Erro ao ler " , Toast.LENGTH_SHORT).show();
@@ -135,4 +158,6 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
             });
 
         }
+
+
 }
